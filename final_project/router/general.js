@@ -35,6 +35,7 @@ public_users.get('/',function (req, res) {
     res.send(JSON.stringify(books,null,4));
 });
 
+//Task 10
 public_users.get("/axiosbooks", function (req,res) {
    
     axios.get("http://localhost:6000/")
@@ -55,7 +56,21 @@ public_users.get('/isbn/:isbn',function (req, res) {
   res.send(books[isbn]);
  });
   
-// Get book details based on author
+ //Task 11
+public_users.get("/axiosbooks/isbn/:isbn", function (req,res) {
+    let isbn = req.params.isbn;
+    axios.get("http://localhost:6000/isbn/"+isbn)
+    .then(function(response){
+      console.log(response.data);
+      return res.status(200).json(response.data);
+    })
+    .catch(function(error){
+        console.log(error);
+        return res.status(500).json({message: "Error fetching book details."})
+    })
+  });
+ 
+ // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
   const author= req.params.author;
   const retBooks=[];
@@ -70,7 +85,19 @@ public_users.get('/author/:author',function (req, res) {
   }
   res.send(retBooks);
 });
-
+//Task 12
+public_users.get("/axiosbooks/author/:author", function (req,res) {
+    let author = req.params.author;
+    axios.get("http://localhost:6000/author/"+author)
+    .then(function(response){
+      console.log(response.data);
+      return res.status(200).json(response.data);
+    })
+    .catch(function(error){
+        console.log(error);
+        return res.status(500).json({message: "Error fetching book details."})
+    })
+  });
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
   //Write your code here
@@ -87,7 +114,19 @@ public_users.get('/title/:title',function (req, res) {
   }
   res.send(retBooks);
 });
-
+//Task 12
+public_users.get("/axiosbooks/title/:title", function (req,res) {
+    let title = req.params.title;
+    axios.get("http://localhost:6000/title/"+title)
+    .then(function(response){
+      console.log(response.data);
+      return res.status(200).json(response.data);
+    })
+    .catch(function(error){
+        console.log(error);
+        return res.status(500).json({message: "Error fetching book details."})
+    })
+  });
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
   //Write your code here
