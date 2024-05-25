@@ -48,11 +48,42 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
   const isbn = req.params.isbn;
   const review = req.body.review;
-  const username = req.body.username;
-  const reviews=books[isbn]["reviews"];
+  const username = req.session.authorization.username;
+  for(var i=0;i<books[isbn]["reviews"].length;i++)
+  {
+    if(books[isbn]["reviews"][i].username==username)
+    {
+        books[isbn]["reviews"][i].review=review;
+        res.send("Review modified successfully");
+        return;
+    }
+  
+  }
   books[isbn]["reviews"].push({"username":username,"review":review});
   res.send("Review added successfully");
 });
+
+// Add a book review
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    //Write your code here
+    const isbn = req.params.isbn;
+    const review = req.body.review;
+    const username = req.session.authorization.username;
+    var deleted =0;
+    for(var i=0;i<books[isbn]["reviews"].length;i++)
+    {
+      if(books[isbn]["reviews"][i].username==username)
+      {
+          books[isbn]["reviews"].splice(i,1);
+          deleted=1;
+          
+      }
+    
+    }
+    if(deleted==1){
+    res.send("Review deleted successfully");
+    }
+  });
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
